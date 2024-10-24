@@ -3,7 +3,7 @@
   <name>social_robot_nav</name>
   <version>0.0.0</version>
   <description>The social_robot_nav package</description>
-
+  <license>BSD</license>
   <maintainer email="bilenbaris97@gmail.com">baris</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>

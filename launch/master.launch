@@ -22,8 +22,16 @@
   <!-- TurtleBot3 -->
   <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
     <arg name="model" value="$(arg model)" />
+    <remap from="scan" to="base_scan"/>
   </include>/
-
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name2" value="$(find social_robot_nav)/worlds/moving_actors.world"/>
+    <arg name="pausedd" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
   <!-- Map Server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
@@ -35,10 +43,14 @@
 
   <!-- Leg Detector -->
   <include file="$(find leg_detector)/launch/leg_detector.launch"/>
-
+  <!-- Add Laser Scanner -->
+ <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+   <rosparam command="load" file="$(find social_robot_nav)/config/laser_filter.yaml" />
+   <remap from="scan" to="base_scan" />
+ </node>
   <!-- People Publisher -->
   <node pkg="social_robot_nav" type="peoplePublisher.py" name="peoplePublisher"/>
-
+   
   <!-- Social Individual Index -->
   <node pkg="social_robot_nav" type="social_individual_index.py" name="social_individual_index"/>
   
